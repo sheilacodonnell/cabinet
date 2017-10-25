@@ -1,6 +1,6 @@
 class DocsController < ApplicationController
 
-	# before_action :find_doc, only: [:show, :edit, :update, :destroy]
+	before_action :find_doc, only: [:show, :edit, :update, :destroy]
 		#we dont need it for idex of new or create. to create a documet does not require you to find that document
 
 	def index
@@ -22,20 +22,29 @@ class DocsController < ApplicationController
 			redirect_to @doc
 		else
 			render 'new'
+		end
 	end
-end
+
+	def edit
+	end
 
 	def update
-		@doc = Doc.find(params[:id])
+		if @doc.update(doc_params)
+			redirect_to @doc
+		else
+			render 'edit'
+		end
 	end
 
 	def destroy
-		@doc = Doc.find(params[:id])
+		@doc.destroy
+		redirect_to docs_path
 	end
 
 	private
 
 		def find_doc
+			@doc = Doc.find(params[:id])
 		end
 
 		def doc_params
